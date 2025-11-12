@@ -14,7 +14,7 @@ class customMemoryResource : public std::pmr::memory_resource {
         size_t mainSize;
 
         struct block {
-            void* adress;
+            void* address;
             size_t size;
             bool isFree;
         };

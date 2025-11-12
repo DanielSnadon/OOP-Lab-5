@@ -1,26 +1,30 @@
 #include <iostream>
-#include "spisok.h"
-#include "square.h"
+#include <vector>
+
+class customMemoryResource : public std::pmr::memory_resource {
+    protected:
+        void* do_allocate(size_t bytes, size_t alignment) override;
+
+        void do_deallocate(void* ptr, size_t bytes, size_t alignment) override;
+
+        bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override;
+
+    private:
+        void* mainBlock;
+        size_t mainSize;
+
+        struct block {
+            void* adress;
+            size_t size;
+            bool isFree;
+        };
+
+        std::vector<block> blocks;
+
+
+};
 
 int main() {
-    std::cout << "Тестируем Spisok..." << std::endl;
-    
-    Spisok spisok(5);
-    
-    Square* square1 = new Square();
-    std::cout << "Введите 4 точки квадрата: ";
-    std::cin >> *square1;
-    
-    spisok.addFigure(square1);
 
-    Square* square2 = new Square();
-    std::cout << "Введите 4 точки квадрата: ";
-    std::cin >> *square2;
-    
-    spisok.addFigure(square2);
-
-    if (square1 == square2) {
-        std::cout << "Равны";
-    }
     return 0;
 }

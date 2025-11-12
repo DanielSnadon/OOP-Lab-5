@@ -23,16 +23,16 @@ class forwardList {
 
             ~Node() = default;
         };
+        
+        using nodeAllocator = typename std::allocator_traits<allocatorType>::template rebind_alloc<Node>;
 
-        allocatorType allocator;
+        nodeAllocator allocator;
         Node* head = nullptr;
         Node* tail = nullptr;
         size_t size = 0;
     
     public:
-        explicit forwardList(const allocatorType& alloc = {}) {
-            : allocator(alloc) {}
-        }
+        explicit forwardList(const allocatorType& alloc = {}) : allocator(alloc) {}
 
         void pushFront(const T& value) {
             Node* newNode = allocator.allocate(1);
@@ -50,7 +50,7 @@ class forwardList {
             allocator.construct(newNode, value);
 
             if (!head) {
-                head = tail;
+                head = newNode;
                 tail = newNode;
             } else {
                 tail->next = newNode;
@@ -65,7 +65,7 @@ class forwardList {
                 return;
             }
 
-            if (pos > size) {
+            if (pos >= size) {
                 pushBack(value);
                 return;
             }
@@ -78,7 +78,7 @@ class forwardList {
             Node* newNode = allocator.allocate(1);
             allocator.construct(newNode, value);
 
-            newNode.next = curr->next;
+            newNode->next = curr->next;
             curr->next = newNode;
             size++;
         }
@@ -123,7 +123,7 @@ class forwardList {
                 return;
             }
 
-            if (pos > size - 1) {
+            if (pos >= size - 1) {
                 popBack();
                 return;
             }
@@ -157,12 +157,12 @@ class forwardList {
             return -1;
         }
 
-        size_t size() const {return size; }
+        size_t getSize() const {return size; }
         bool isEmpty() const {return size == 0; }
 
         void clear() {
             while (head) {
-                frontPop();
+                popFront();
             }
         }
 
@@ -224,5 +224,13 @@ class forwardList {
             private:
                 Node* current;
                 friend class forwardList;
+        };
+
+        iterator begin() { 
+            return iterator(head); 
+        }
+
+        iterator end() { 
+            return iterator(nullptr); 
         }
 };

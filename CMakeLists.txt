@@ -1,23 +1,23 @@
-cmake_minimum_required(VERSION 3.12)
-project(Task5)
+cmake_minimum_required(VERSION 3.15)
+project(OOP-LAB-5)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Включаем директории с заголовочными файлами
+include_directories(include)
+
+# Основная программа
+add_executable(main src/main.cpp)
+
+# Тесты
+add_executable(tests tests/tester.cpp)
+
+# Ищем Google Test
 find_package(GTest REQUIRED)
 
-add_executable(Task5 
-    src/main.cpp
-)
+# Линкуем тесты с Google Test
+target_link_libraries(tests GTest::gtest GTest::gtest_main)
 
-add_executable(tests
-    tests/tester.cpp
-)
-
-target_link_libraries(tests GTest::GTest GTest::Main)
-
-target_compile_options(Task5 PRIVATE -Wall -Wextra)
-target_compile_options(tests PRIVATE -Wall -Wextra)
-
-target_include_directories(Task5 PRIVATE include)
-target_include_directories(tests PRIVATE include)
+# Если не работает, попробуй:
+# target_link_libraries(tests gtest gtest_main pthread)

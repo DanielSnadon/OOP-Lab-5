@@ -14,6 +14,8 @@ class customMemoryResource : public std::pmr::memory_resource {
         struct memoryBlock {
             size_t offset{0};
             size_t size{0};
+
+            memoryBlock(size_t o = 0, size_t s = 0) : offset(o), size(s) {}
         };
         
         static constexpr size_t BUFFER_SIZE{1024};

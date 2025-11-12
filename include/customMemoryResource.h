@@ -1,7 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include <memory_resource>
 #include <vector>
+#include <concepts>
+#include <memory>
+#include <exception>
 #include <algorithm>
 
 // Полиморфный аллокатор
